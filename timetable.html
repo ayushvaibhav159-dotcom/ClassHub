@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timetable</title>
+
+<style>
+
+body{
+    background:#121212;
+    color:white;
+    font-family:Arial;
+    padding:20px;
+}
+
+nav{
+    background:#1f1f1f;
+    padding:15px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-right:20px;
+    font-weight:bold;
+}
+
+.card{
+    background:#1e1e1e;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+h1{
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+<a href="dashboard.html">Dashboard</a>
+<a href="timetable.html">Timetable</a>
+<a href="attendance.html">Attendance</a>
+<a href="assignments.html">Assignments</a>
+</nav>    
+
+<h1>Weekly Timetable</h1>
+
+<div class="card">
+<h2>Monday</h2>
+<p id="monday"></p>
+</div>
+
+<div class="card">
+<h2>Tuesday</h2>
+<p id="tuesday"></p>
+</div>
+
+<div class="card">
+<h2>Wednesday</h2>
+<p id="wednesday"></p>
+</div>
+
+<div class="card">
+<h2>Thursday</h2>
+<p id="thursday"></p>
+</div>
+
+<div class="card">
+<h2>Friday</h2>
+<p id="friday"></p>
+</div>
+
+<script>
+
+document.getElementById("monday").innerHTML =
+localStorage.getItem("monday");
+
+document.getElementById("tuesday").innerHTML =
+localStorage.getItem("tuesday");
+
+document.getElementById("wednesday").innerHTML =
+localStorage.getItem("wednesday");
+
+document.getElementById("thursday").innerHTML =
+localStorage.getItem("thursday");
+
+document.getElementById("friday").innerHTML =
+localStorage.getItem("friday");
+
+</script>
+
+</body>
+</html>

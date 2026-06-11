@@ -1,0 +1,43 @@
+S<!DOCTYPE html>
+<html>
+<head>
+<title>Assignments</title>
+
+<style>
+body{
+    background:#121212;
+    color:white;
+    font-family:Arial;
+    padding:20px;
+}
+
+.card{
+    background:#1e1e1e;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Assignments</h1>
+
+<div class="card">
+<h2 id="assignmentTitle"></h2>
+<p id="assignmentDate"></p>
+</div>
+
+<script>
+
+document.getElementById("assignmentTitle").innerHTML =
+localStorage.getItem("assignmentTitle") || "No Assignment";
+
+document.getElementById("assignmentDate").innerHTML =
+localStorage.getItem("assignmentDate") || "";
+
+</script>
+
+</body>
+</html>

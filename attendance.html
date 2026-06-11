@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Attendance Tracker</title>
+
+<style>    
+body{
+    background:#121212;
+    color:white;
+    font-family:Arial;
+    padding:20px;
+}
+
+nav{
+    background:#1f1f1f;
+    padding:15px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-right:20px;
+    font-weight:bold;
+}
+
+.card{
+    background:#1e1e1e;
+    padding:20px;
+    border-radius:10px;
+    max-width:500px;
+    margin:auto;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:green;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+.result{
+    margin-top:20px;
+    font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<a href="dashboard.html">Dashboard</a>
+<a href="timetable.html">Timetable</a>
+<a href="attendance.html">Attendance</a>
+<a href="assignments.html">Assignments</a>
+</nav>
+
+<div class="card">
+
+<h1>Attendance Calculator</h1>
+
+<input type="number" id="total" placeholder="Total Classes">
+
+<input type="number" id="present" placeholder="Present Classes">
+
+<button onclick="calculateAttendance()">
+Calculate
+</button>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+function calculateAttendance(){
+
+let total =
+parseInt(document.getElementById("total").value);
+
+let present =
+parseInt(document.getElementById("present").value);
+
+if(!total || !present){
+    alert("Enter values");
+    return;
+}
+
+let percentage =
+((present/total)*100).toFixed(2);
+
+let absent = total - present;
+
+let status = "";
+
+if(percentage >= 75){
+    status = "✅ Safe";
+}
+else{
+    status = "⚠️ Below 75%";
+}
+
+document.getElementById("result").innerHTML =
+`
+Attendance: ${percentage}% <br>
+Absent Classes: ${absent} <br>
+Status: ${status}
+`;
+
+}
+
+</script>
+
+</body>
+</html>
