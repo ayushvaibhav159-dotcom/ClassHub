@@ -6,89 +6,99 @@
 <title>ClassHub Dashboard</title>
 
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
 body{
-    background:#121212;
-    color:white;
+background:#121212;
+color:white;
 }
 
 nav{
-    background:#1f1f1f;
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+background:#1f1f1f;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
 .nav-links a{
-    color:white;
-    text-decoration:none;
-    margin-right:20px;
-    font-weight:bold;
+color:white;
+text-decoration:none;
+margin-right:20px;
+font-weight:bold;
 }
 
 .logout-btn{
-    background:red;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    cursor:pointer;
-    border-radius:5px;
+background:red;
+border:none;
+padding:10px 15px;
+color:white;
+border-radius:8px;
+cursor:pointer;
 }
 
 header{
-    background:#1f1f1f;
-    padding:20px;
-    text-align:center;
-    font-size:24px;
-    font-weight:bold;
+background:#1f1f1f;
+padding:25px;
+text-align:center;
+}
+
+#profilePic{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:10px;
 }
 
 .container{
-    padding:20px;
+padding:20px;
 }
 
 .card{
-    background:#1e1e1e;
-    padding:20px;
-    margin-bottom:15px;
-    border-radius:10px;
+background:#1e1e1e;
+padding:25px;
+border-radius:12px;
+margin-bottom:15px;
 }
 
 .card h2{
-    margin-bottom:10px;
-}
-
-input{
-    padding:8px;
-    margin:5px;
-}
-
-button{
-    padding:8px 15px;
-    cursor:pointer;
+margin-bottom:10px;
 }
 
 .notice{
-    color:#ffd700;
+color:#FFD700;
 }
 
 .assignment{
-    color:#00ff99;
+color:#00FF99;
 }
 
 .exam{
-    color:#ff6666;
+color:#FF6666;
 }
-</style>
 
+input{
+padding:10px;
+margin:5px;
+border:none;
+border-radius:5px;
+}
+
+button{
+padding:10px;
+cursor:pointer;
+}
+
+</style>
 </head>
+
 <body>
 
 <nav>
@@ -106,22 +116,42 @@ Logout
 
 </nav>
 
-<header id="welcomeUser">
-ClassHub Dashboard
+<header>
+
+<img
+id="profilePic"
+src=""
+alt="Profile Photo">
+
+<h1 id="welcomeUser">
+Welcome
+</h1>
+
+<p id="userEmail"></p>
+
 </header>
 
 <div class="container">
 
 <div class="card">
+
 <h2>Today's Classes</h2>
+
 <p>09:00 AM - DSA</p>
 <p>10:00 AM - OOP</p>
 <p>11:00 AM - COA</p>
+
 </div>
 
 <div class="card">
+
 <h2>Attendance</h2>
-<p>Current Attendance: <strong>82%</strong></p>
+
+<p>
+Current Attendance:
+<strong>82%</strong>
+</p>
+
 </div>
 
 <div class="card">
@@ -147,52 +177,80 @@ Calculate
 </div>
 
 <div class="card notice">
-<h2 id="noticeTitle">No Notice</h2>
-<p id="noticeText">No Notice Available</p>
+
+<h2 id="noticeTitle">
+No Notice
+</h2>
+
+<p id="noticeText">
+No Notice Available
+</p>
+
 </div>
 
 <div class="card assignment">
+
 <h2>Assignment</h2>
+
 <p id="assignmentTitle">
 No Assignment
 </p>
+
 <p id="assignmentDate"></p>
+
 </div>
 
 <div class="card exam">
+
 <h2>Exam Countdown</h2>
+
 <p id="countdown"></p>
+
 </div>
 
 </div>
 
 <script>
 
-// Welcome User
-
 const userName =
 localStorage.getItem("userName");
 
-if(userName){
+const userEmail =
+localStorage.getItem("userEmail");
 
-document.getElementById("welcomeUser").innerHTML =
-"Welcome, " + userName + " 👋";
+const userPhoto =
+localStorage.getItem("userPhoto");
 
-}
-
-// Logout
-
-function logout(){
-
-localStorage.removeItem("userName");
-localStorage.removeItem("userEmail");
+if(!userName){
 
 window.location.href =
 "login.html";
 
 }
 
-// Exam Countdown
+document.getElementById("welcomeUser")
+.innerHTML =
+"Welcome, " + userName + " 👋";
+
+document.getElementById("userEmail")
+.innerHTML =
+userEmail || "";
+
+if(userPhoto){
+
+document.getElementById("profilePic")
+.src = userPhoto;
+
+}
+
+function logout(){
+
+localStorage.clear();
+
+window.location.href =
+"login.html";
+
+}
 
 const examDate =
 new Date("2026-10-12");
@@ -207,49 +265,36 @@ examDate - today;
 
 const days =
 Math.floor(
-diff / (1000 * 60 * 60 * 24)
+diff / (1000*60*60*24)
 );
 
-document.getElementById("countdown").innerHTML =
+document.getElementById("countdown")
+.innerHTML =
 days + " Days Remaining";
 
 }
 
 updateCountdown();
 
-// Notice
+document.getElementById("assignmentTitle")
+.innerHTML =
+localStorage.getItem("assignmentTitle")
+|| "No Assignment";
 
-let savedTitle =
-localStorage.getItem("noticeTitle");
+document.getElementById("assignmentDate")
+.innerHTML =
+localStorage.getItem("assignmentDate")
+|| "";
 
-let savedText =
-localStorage.getItem("noticeText");
+document.getElementById("noticeTitle")
+.innerHTML =
+localStorage.getItem("noticeTitle")
+|| "No Notice";
 
-if(savedTitle){
-
-document.getElementById("noticeTitle").innerHTML =
-savedTitle;
-
-}
-
-if(savedText){
-
-document.getElementById("noticeText").innerHTML =
-savedText;
-
-}
-
-// Assignment
-
-document.getElementById("assignmentTitle").innerHTML =
-localStorage.getItem("assignmentTitle") ||
-"No Assignment";
-
-document.getElementById("assignmentDate").innerHTML =
-localStorage.getItem("assignmentDate") ||
-"";
-
-// Safe Bunk Calculator
+document.getElementById("noticeText")
+.innerHTML =
+localStorage.getItem("noticeText")
+|| "No Notice Available";
 
 function calculateBunk(){
 
@@ -273,7 +318,8 @@ return;
 
 let safeBunks =
 Math.floor(
-(present - (0.75 * total)) / 0.75
+(present - (0.75 * total))
+/ 0.75
 );
 
 if(safeBunks < 0){
@@ -282,10 +328,11 @@ safeBunks = 0;
 
 }
 
-document.getElementById("bunkResult").innerHTML =
+document.getElementById("bunkResult")
+.innerHTML =
 "You can miss " +
 safeBunks +
-" more classes and still stay above 75%";
+" classes and remain above 75% attendance.";
 
 }
 
