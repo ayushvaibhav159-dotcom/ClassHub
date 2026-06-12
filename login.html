@@ -10,7 +10,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
 body{
@@ -26,41 +26,27 @@ body{
     padding:30px;
     width:350px;
     border-radius:15px;
-    color:white;
+    text-align:center;
 }
 
 h1{
-    text-align:center;
+    color:white;
     margin-bottom:20px;
 }
 
-input{
+.google-btn{
     width:100%;
     padding:12px;
-    margin:10px 0;
     border:none;
     border-radius:8px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    background:#4CAF50;
+    background:#4285F4;
     color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
     font-size:16px;
+    cursor:pointer;
 }
 
-button:hover{
-    background:#45a049;
-}
-
-.error{
-    color:red;
-    margin-top:10px;
-    text-align:center;
+.google-btn:hover{
+    background:#357ae8;
 }
 </style>
 
@@ -71,36 +57,65 @@ button:hover{
 
 <h1>ClassHub</h1>
 
-<input type="email" id="email" placeholder="Enter Email">
-
-<input type="password" id="password" placeholder="Enter Password">
-
-<button onclick="login()">Login</button>
-
-<p class="error" id="error"></p>
+<button class="google-btn" id="googleLogin">
+Sign in with Google
+</button>
 
 </div>
 
-<script>
+<script type="module">
 
-function login(){
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
+import {
+getAuth,
+GoogleAuthProvider,
+signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-if(email==="admin@classhub.com" && password==="admin123"){
+const firebaseConfig = {
+  apiKey: "AIzaSyC4Qfh7ZuUsMmOjI5nqsBQBC31853L0NZE",
+  authDomain: "classhub-45a9b.firebaseapp.com",
+  projectId: "classhub-45a9b",
+  storageBucket: "classhub-45a9b.firebasestorage.app",
+  messagingSenderId: "433119734739",
+  appId: "1:433119734739:web:90d2c4efdb6c89d6a61d26"
+};
 
-window.location.href="dashboard.html";
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
+
+document
+.getElementById("googleLogin")
+.addEventListener("click", async () => {
+
+try {
+
+const result = await signInWithPopup(auth, provider);
+
+localStorage.setItem(
+"userName",
+result.user.displayName
+);
+
+localStorage.setItem(
+"userEmail",
+result.user.email
+);
+
+window.location.href = "dashboard.html";
 
 }
-else{
+catch(error){
 
-document.getElementById("error").innerHTML =
-"Invalid Email or Password";
-
-}
+alert(error.message);
 
 }
+
+});
 
 </script>
 
