@@ -21,13 +21,25 @@ body{
 nav{
     background:#1f1f1f;
     padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-nav a{
+.nav-links a{
     color:white;
     text-decoration:none;
     margin-right:20px;
     font-weight:bold;
+}
+
+.logout-btn{
+    background:red;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    cursor:pointer;
+    border-radius:5px;
 }
 
 header{
@@ -53,6 +65,16 @@ header{
     margin-bottom:10px;
 }
 
+input{
+    padding:8px;
+    margin:5px;
+}
+
+button{
+    padding:8px 15px;
+    cursor:pointer;
+}
+
 .notice{
     color:#ffd700;
 }
@@ -70,29 +92,37 @@ header{
 <body>
 
 <nav>
+
+<div class="nav-links">
 <a href="dashboard.html">Dashboard</a>
 <a href="timetable.html">Timetable</a>
 <a href="attendance.html">Attendance</a>
 <a href="assignments.html">Assignments</a>
+</div>
+
+<button class="logout-btn" onclick="logout()">
+Logout
+</button>
+
 </nav>
 
-<header>
-    ClassHub Dashboard
+<header id="welcomeUser">
+ClassHub Dashboard
 </header>
 
 <div class="container">
 
-    <div class="card">
-        <h2>Today's Classes</h2>
-        <p>09:00 AM - DSA</p>
-        <p>10:00 AM - OOP</p>
-        <p>11:00 AM - COA</p>
-    </div>
+<div class="card">
+<h2>Today's Classes</h2>
+<p>09:00 AM - DSA</p>
+<p>10:00 AM - OOP</p>
+<p>11:00 AM - COA</p>
+</div>
 
-    <div class="card">
-        <h2>Attendance</h2>
-        <p>Current Attendance: <strong>82%</strong></p>
-    </div>
+<div class="card">
+<h2>Attendance</h2>
+<p>Current Attendance: <strong>82%</strong></p>
+</div>
 
 <div class="card">
 
@@ -116,51 +146,78 @@ Calculate
 
 </div>
 
-    <div class="card notice">
-        <h2 id="noticeTitle">No Notice</h2>
-        <p id="noticeText">No Notice Available</p>
-    </div>
+<div class="card notice">
+<h2 id="noticeTitle">No Notice</h2>
+<p id="noticeText">No Notice Available</p>
+</div>
 
-  <div class="card assignment">
+<div class="card assignment">
+<h2>Assignment</h2>
+<p id="assignmentTitle">
+No Assignment
+</p>
+<p id="assignmentDate"></p>
+</div>
 
-    <h2>Assignment</h2>
-
-    <p id="assignmentTitle">
-        No Assignment
-    </p>
-
-    <p id="assignmentDate"></p>
-
-  </div>
-
-    <div class="card exam">
-        <h2>Exam Countdown</h2>
-        <p id="countdown"></p>
-    </div>
+<div class="card exam">
+<h2>Exam Countdown</h2>
+<p id="countdown"></p>
+</div>
 
 </div>
 
 <script>
 
+// Welcome User
+
+const userName =
+localStorage.getItem("userName");
+
+if(userName){
+
+document.getElementById("welcomeUser").innerHTML =
+"Welcome, " + userName + " 👋";
+
+}
+
+// Logout
+
+function logout(){
+
+localStorage.removeItem("userName");
+localStorage.removeItem("userEmail");
+
+window.location.href =
+"login.html";
+
+}
+
 // Exam Countdown
-const examDate = new Date("2026-10-12");
 
-function updateCountdown() {
+const examDate =
+new Date("2026-10-12");
 
-    const today = new Date();
+function updateCountdown(){
 
-    const diff = examDate - today;
+const today =
+new Date();
 
-    const days =
-    Math.floor(diff / (1000 * 60 * 60 * 24));
+const diff =
+examDate - today;
 
-    document.getElementById("countdown").innerHTML =
-    days + " Days Remaining";
+const days =
+Math.floor(
+diff / (1000 * 60 * 60 * 24)
+);
+
+document.getElementById("countdown").innerHTML =
+days + " Days Remaining";
+
 }
 
 updateCountdown();
 
-// Load Notice
+// Notice
 
 let savedTitle =
 localStorage.getItem("noticeTitle");
@@ -169,21 +226,30 @@ let savedText =
 localStorage.getItem("noticeText");
 
 if(savedTitle){
-    document.getElementById("noticeTitle").innerHTML =
-    savedTitle;
+
+document.getElementById("noticeTitle").innerHTML =
+savedTitle;
+
 }
 
 if(savedText){
-    document.getElementById("noticeText").innerHTML =
-    savedText;
+
+document.getElementById("noticeText").innerHTML =
+savedText;
+
 }
+
+// Assignment
 
 document.getElementById("assignmentTitle").innerHTML =
 localStorage.getItem("assignmentTitle") ||
 "No Assignment";
 
 document.getElementById("assignmentDate").innerHTML =
-localStorage.getItem("assignmentDate") || "";
+localStorage.getItem("assignmentDate") ||
+"";
+
+// Safe Bunk Calculator
 
 function calculateBunk(){
 
@@ -198,8 +264,11 @@ document.getElementById("presentClasses").value
 );
 
 if(isNaN(total) || isNaN(present)){
-    alert("Enter values");
-    return;
+
+alert("Enter values");
+
+return;
+
 }
 
 let safeBunks =
@@ -208,7 +277,9 @@ Math.floor(
 );
 
 if(safeBunks < 0){
-    safeBunks = 0;
+
+safeBunks = 0;
+
 }
 
 document.getElementById("bunkResult").innerHTML =
