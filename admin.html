@@ -4,8 +4,7 @@
 <title>Admin Panel</title>
 
 <script>
-// Protect Admin Panel
-if (localStorage.getItem("adminLoggedIn") !== "true") {
+if(localStorage.getItem("adminLoggedIn") !== "true"){
     window.location.href = "admin-login.html";
 }
 </script>
@@ -40,6 +39,13 @@ button{
     background:red;
     float:right;
 }
+
+.card{
+    background:#1e1e1e;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
 </style>
 
 </head>
@@ -50,6 +56,8 @@ Logout
 </button>
 
 <h1>Admin Panel</h1>
+
+<div class="card">
 
 <h2>Add Notice</h2>
 
@@ -67,116 +75,97 @@ placeholder="Notice Description">
 Save Notice
 </button>
 
-<h2>Monday</h2>
-<textarea id="monday"></textarea>
+</div>
 
-<h2>Tuesday</h2>
-<textarea id="tuesday"></textarea>
+<script type="module">
 
-<h2>Wednesday</h2>
-<textarea id="wednesday"></textarea>
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-<h2>Thursday</h2>
-<textarea id="thursday"></textarea>
-
-<h2>Friday</h2>
-<textarea id="friday"></textarea>
-
-<button onclick="saveTimetable()">
-Save Timetable
-</button>
-
-<h2>Assignment</h2>
-
-<input
-type="text"
-id="assignmentTitle"
-placeholder="Assignment Title">
-
-<input
-type="date"
-id="assignmentDate">
-
-<button onclick="saveAssignment()">
-Save Assignment
-</button>
-
-<script>
-
-// Logout
-function logoutAdmin(){
-    localStorage.removeItem("adminLoggedIn");
-    window.location.href = "admin-login.html";
+import {
+getFirestore,
+doc,
+setDoc
 }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Save Notice
-function saveNotice(){
+const firebaseConfig = {
+apiKey: "AIzaSyC4Qfh7ZuUsMmOjI5nqsBQBC31853L0NZE",
+authDomain: "classhub-45a9b.firebaseapp.com",
+projectId: "classhub-45a9b",
+storageBucket: "classhub-45a9b.firebasestorage.app",
+messagingSenderId: "433119734739",
+appId: "1:433119734739:web:90d2c4efdb6c89d6a61d26"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.logoutAdmin = function(){
+
+    localStorage.removeItem(
+        "adminLoggedIn"
+    );
+
+    window.location.href =
+    "admin-login.html";
+
+};
+
+window.saveNotice = async function(){
 
     let title =
-    document.getElementById("noticeTitle").value;
+    document.getElementById(
+        "noticeTitle"
+    ).value;
 
     let text =
-    document.getElementById("noticeText").value;
+    document.getElementById(
+        "noticeText"
+    ).value;
 
-    localStorage.setItem(
-        "noticeTitle",
-        title
-    );
+    if(title === "" || text === ""){
+        alert("Please enter notice title and description.");
+        return;
+    }
 
-    localStorage.setItem(
-        "noticeText",
-        text
-    );
+    try{
 
-    alert("Notice Saved");
-}
+        await setDoc(
+            doc(
+                db,
+                "notices",
+                "latest"
+            ),
+            {
+                title: title,
+                text: text
+            }
+        );
 
-// Save Timetable
-function saveTimetable(){
+        alert(
+            "Notice Saved to Firebase"
+        );
 
-    localStorage.setItem(
-        "monday",
-        document.getElementById("monday").value
-    );
+        document.getElementById(
+            "noticeTitle"
+        ).value = "";
 
-    localStorage.setItem(
-        "tuesday",
-        document.getElementById("tuesday").value
-    );
+        document.getElementById(
+            "noticeText"
+        ).value = "";
 
-    localStorage.setItem(
-        "wednesday",
-        document.getElementById("wednesday").value
-    );
+    }
+    catch(error){
 
-    localStorage.setItem(
-        "thursday",
-        document.getElementById("thursday").value
-    );
+        alert(
+            "Error: " +
+            error.message
+        );
 
-    localStorage.setItem(
-        "friday",
-        document.getElementById("friday").value
-    );
+    }
 
-    alert("Timetable Saved");
-}
-
-// Save Assignment
-function saveAssignment(){
-
-    localStorage.setItem(
-        "assignmentTitle",
-        document.getElementById("assignmentTitle").value
-    );
-
-    localStorage.setItem(
-        "assignmentDate",
-        document.getElementById("assignmentDate").value
-    );
-
-    alert("Assignment Saved");
-}
+};
 
 </script>
 
