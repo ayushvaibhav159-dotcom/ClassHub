@@ -104,6 +104,25 @@ Save Timetable
 
 </div>
 
+<div class="card">
+
+<h2>Assignment</h2>
+
+<input
+type="text"
+id="assignmentTitle"
+placeholder="Assignment Title">
+
+<input
+type="date"
+id="assignmentDate">
+
+<button onclick="saveAssignment()">
+Save Assignment
+</button>
+
+</div>
+
 <script type="module">
 
 import { initializeApp }
@@ -228,6 +247,63 @@ window.saveTimetable = async function(){
         alert(
             "Timetable Saved to Firebase"
         );
+
+    }
+    catch(error){
+
+        alert(
+            "Error: " +
+            error.message
+        );
+
+    }
+
+};
+
+window.saveAssignment = async function(){
+
+    let title =
+    document.getElementById(
+        "assignmentTitle"
+    ).value;
+
+    let date =
+    document.getElementById(
+        "assignmentDate"
+    ).value;
+
+    if(title === "" || date === ""){
+        alert(
+            "Please enter assignment title and date."
+        );
+        return;
+    }
+
+    try{
+
+        await setDoc(
+            doc(
+                db,
+                "assignments",
+                "latest"
+            ),
+            {
+                title: title,
+                date: date
+            }
+        );
+
+        alert(
+            "Assignment Saved to Firebase"
+        );
+
+        document.getElementById(
+            "assignmentTitle"
+        ).value = "";
+
+        document.getElementById(
+            "assignmentDate"
+        ).value = "";
 
     }
     catch(error){
