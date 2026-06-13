@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,11 +180,11 @@ Calculate
 <div class="card notice">
 
 <h2 id="noticeTitle">
-No Notice
+Loading Notice...
 </h2>
 
 <p id="noticeText">
-No Notice Available
+Please wait...
 </p>
 
 </div>
@@ -286,16 +287,6 @@ document.getElementById("assignmentDate")
 localStorage.getItem("assignmentDate")
 || "";
 
-document.getElementById("noticeTitle")
-.innerHTML =
-localStorage.getItem("noticeTitle")
-|| "No Notice";
-
-document.getElementById("noticeText")
-.innerHTML =
-localStorage.getItem("noticeText")
-|| "No Notice Available";
-
 function calculateBunk(){
 
 let total =
@@ -311,7 +302,6 @@ document.getElementById("presentClasses").value
 if(isNaN(total) || isNaN(present)){
 
 alert("Enter values");
-
 return;
 
 }
@@ -338,5 +328,81 @@ safeBunks +
 
 </script>
 
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyC4Qfh7ZuUsMmOjI5nqsBQBC31853L0NZE",
+authDomain: "classhub-45a9b.firebaseapp.com",
+projectId: "classhub-45a9b",
+storageBucket: "classhub-45a9b.firebasestorage.app",
+messagingSenderId: "433119734739",
+appId: "1:433119734739:web:90d2c4efdb6c89d6a61d26"
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+try{
+
+const noticeRef =
+doc(db, "notices", "latest");
+
+const noticeSnap =
+await getDoc(noticeRef);
+
+if(noticeSnap.exists()){
+
+document.getElementById("noticeTitle")
+.innerHTML =
+noticeSnap.data().title;
+
+document.getElementById("noticeText")
+.innerHTML =
+noticeSnap.data().text;
+
+}
+else{
+
+document.getElementById("noticeTitle")
+.innerHTML =
+"No Notice";
+
+document.getElementById("noticeText")
+.innerHTML =
+"No Notice Available";
+
+}
+
+}
+catch(error){
+
+console.log(error);
+
+document.getElementById("noticeTitle")
+.innerHTML =
+"No Notice";
+
+document.getElementById("noticeText")
+.innerHTML =
+"Unable to load notice.";
+
+}
+
+</script>
+
 </body>
 </html>
+```
