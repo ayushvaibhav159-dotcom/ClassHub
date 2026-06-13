@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,6 +74,32 @@ placeholder="Notice Description">
 
 <button onclick="saveNotice()">
 Save Notice
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Monday</h2>
+<textarea id="monday"></textarea>
+
+<h2>Tuesday</h2>
+<textarea id="tuesday"></textarea>
+
+<h2>Wednesday</h2>
+<textarea id="wednesday"></textarea>
+
+<h2>Thursday</h2>
+<textarea id="thursday"></textarea>
+
+<h2>Friday</h2>
+<textarea id="friday"></textarea>
+
+<h2>Saturday</h2>
+<textarea id="saturday"></textarea>
+
+<button onclick="saveTimetable()">
+Save Timetable
 </button>
 
 </div>
@@ -167,7 +194,55 @@ window.saveNotice = async function(){
 
 };
 
+window.saveTimetable = async function(){
+
+    try{
+
+        await setDoc(
+            doc(
+                db,
+                "timetable",
+                "week"
+            ),
+            {
+                monday:
+                document.getElementById("monday").value,
+
+                tuesday:
+                document.getElementById("tuesday").value,
+
+                wednesday:
+                document.getElementById("wednesday").value,
+
+                thursday:
+                document.getElementById("thursday").value,
+
+                friday:
+                document.getElementById("friday").value,
+
+                saturday:
+                document.getElementById("saturday").value
+            }
+        );
+
+        alert(
+            "Timetable Saved to Firebase"
+        );
+
+    }
+    catch(error){
+
+        alert(
+            "Error: " +
+            error.message
+        );
+
+    }
+
+};
+
 </script>
 
 </body>
 </html>
+```
