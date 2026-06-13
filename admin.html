@@ -1,28 +1,29 @@
 <!DOCTYPE html>
-
 <html>
 <head>
 <title>Admin Panel</title>
+
+<script>
+// Protect Admin Panel
+if (localStorage.getItem("adminLoggedIn") !== "true") {
+    window.location.href = "admin-login.html";
+}
+</script>
 
 <style>
 body{
     background:#121212;
     color:white;
-    font-family:Arial;
+    font-family:Arial,sans-serif;
     padding:20px;
 }
 
-.top-bar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
-}
-
-input,textarea{
+input, textarea{
     width:100%;
     padding:10px;
     margin:10px 0;
+    border:none;
+    border-radius:8px;
 }
 
 button{
@@ -30,46 +31,25 @@ button{
     background:green;
     color:white;
     border:none;
+    border-radius:8px;
     cursor:pointer;
     margin-bottom:15px;
-    border-radius:5px;
 }
 
 .logout-btn{
     background:red;
-}
-
-.card{
-    background:#1e1e1e;
-    padding:20px;
-    border-radius:10px;
-    margin-bottom:20px;
+    float:right;
 }
 </style>
 
 </head>
 <body>
 
-<script>
-
-if(localStorage.getItem("isAdmin") !== "true"){
-    window.location.href = "admin-login.html";
-}
-
-</script>
-
-<div class="top-bar">
+<button class="logout-btn" onclick="logoutAdmin()">
+Logout
+</button>
 
 <h1>Admin Panel</h1>
-
-<button
-class="logout-btn"
-onclick="logout()">
-Logout </button>
-
-</div>
-
-<div class="card">
 
 <h2>Add Notice</h2>
 
@@ -86,10 +66,6 @@ placeholder="Notice Description">
 <button onclick="saveNotice()">
 Save Notice
 </button>
-
-</div>
-
-<div class="card">
 
 <h2>Monday</h2>
 <textarea id="monday"></textarea>
@@ -110,10 +86,6 @@ Save Notice
 Save Timetable
 </button>
 
-</div>
-
-<div class="card">
-
 <h2>Assignment</h2>
 
 <input
@@ -129,19 +101,15 @@ id="assignmentDate">
 Save Assignment
 </button>
 
-</div>
-
 <script>
 
-function logout(){
-
-    localStorage.removeItem("isAdmin");
-
-    window.location.href =
-    "admin-login.html";
-
+// Logout
+function logoutAdmin(){
+    localStorage.removeItem("adminLoggedIn");
+    window.location.href = "admin-login.html";
 }
 
+// Save Notice
 function saveNotice(){
 
     let title =
@@ -151,64 +119,63 @@ function saveNotice(){
     document.getElementById("noticeText").value;
 
     localStorage.setItem(
-    "noticeTitle",
-    title
+        "noticeTitle",
+        title
     );
 
     localStorage.setItem(
-    "noticeText",
-    text
+        "noticeText",
+        text
     );
 
     alert("Notice Saved");
-
 }
 
+// Save Timetable
 function saveTimetable(){
 
     localStorage.setItem(
-    "monday",
-    document.getElementById("monday").value
+        "monday",
+        document.getElementById("monday").value
     );
 
     localStorage.setItem(
-    "tuesday",
-    document.getElementById("tuesday").value
+        "tuesday",
+        document.getElementById("tuesday").value
     );
 
     localStorage.setItem(
-    "wednesday",
-    document.getElementById("wednesday").value
+        "wednesday",
+        document.getElementById("wednesday").value
     );
 
     localStorage.setItem(
-    "thursday",
-    document.getElementById("thursday").value
+        "thursday",
+        document.getElementById("thursday").value
     );
 
     localStorage.setItem(
-    "friday",
-    document.getElementById("friday").value
+        "friday",
+        document.getElementById("friday").value
     );
 
     alert("Timetable Saved");
-
 }
 
+// Save Assignment
 function saveAssignment(){
 
     localStorage.setItem(
-    "assignmentTitle",
-    document.getElementById("assignmentTitle").value
+        "assignmentTitle",
+        document.getElementById("assignmentTitle").value
     );
 
     localStorage.setItem(
-    "assignmentDate",
-    document.getElementById("assignmentDate").value
+        "assignmentDate",
+        document.getElementById("assignmentDate").value
     );
 
     alert("Assignment Saved");
-
 }
 
 </script>
