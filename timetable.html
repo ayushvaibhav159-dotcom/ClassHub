@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,7 @@
 body{
     background:#121212;
     color:white;
-    font-family:Arial;
+    font-family:Arial,sans-serif;
     padding:20px;
 }
 
@@ -48,53 +49,116 @@ h1{
 <a href="timetable.html">Timetable</a>
 <a href="attendance.html">Attendance</a>
 <a href="assignments.html">Assignments</a>
-</nav>    
+</nav>
 
 <h1>Weekly Timetable</h1>
 
 <div class="card">
 <h2>Monday</h2>
-<p id="monday"></p>
+<p id="monday">Loading...</p>
 </div>
 
 <div class="card">
 <h2>Tuesday</h2>
-<p id="tuesday"></p>
+<p id="tuesday">Loading...</p>
 </div>
 
 <div class="card">
 <h2>Wednesday</h2>
-<p id="wednesday"></p>
+<p id="wednesday">Loading...</p>
 </div>
 
 <div class="card">
 <h2>Thursday</h2>
-<p id="thursday"></p>
+<p id="thursday">Loading...</p>
 </div>
 
 <div class="card">
 <h2>Friday</h2>
-<p id="friday"></p>
+<p id="friday">Loading...</p>
 </div>
 
-<script>
+<div class="card">
+<h2>Saturday</h2>
+<p id="saturday">Loading...</p>
+</div>
 
-document.getElementById("monday").innerHTML =
-localStorage.getItem("monday");
+<script type="module">
 
-document.getElementById("tuesday").innerHTML =
-localStorage.getItem("tuesday");
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-document.getElementById("wednesday").innerHTML =
-localStorage.getItem("wednesday");
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-document.getElementById("thursday").innerHTML =
-localStorage.getItem("thursday");
+const firebaseConfig = {
+apiKey: "AIzaSyC4Qfh7ZuUsMmOjI5nqsBQBC31853L0NZE",
+authDomain: "classhub-45a9b.firebaseapp.com",
+projectId: "classhub-45a9b",
+storageBucket: "classhub-45a9b.firebasestorage.app",
+messagingSenderId: "433119734739",
+appId: "1:433119734739:web:90d2c4efdb6c89d6a61d26"
+};
 
-document.getElementById("friday").innerHTML =
-localStorage.getItem("friday");
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+try{
+
+    const timetableRef =
+    doc(db, "timetable", "week");
+
+    const timetableSnap =
+    await getDoc(timetableRef);
+
+    if(timetableSnap.exists()){
+
+        const data =
+        timetableSnap.data();
+
+        document.getElementById("monday").innerHTML =
+        data.monday || "No Class";
+
+        document.getElementById("tuesday").innerHTML =
+        data.tuesday || "No Class";
+
+        document.getElementById("wednesday").innerHTML =
+        data.wednesday || "No Class";
+
+        document.getElementById("thursday").innerHTML =
+        data.thursday || "No Class";
+
+        document.getElementById("friday").innerHTML =
+        data.friday || "No Class";
+
+        document.getElementById("saturday").innerHTML =
+        data.saturday || "No Class";
+
+    }
+    else{
+
+        document.getElementById("monday").innerHTML = "No Class";
+        document.getElementById("tuesday").innerHTML = "No Class";
+        document.getElementById("wednesday").innerHTML = "No Class";
+        document.getElementById("thursday").innerHTML = "No Class";
+        document.getElementById("friday").innerHTML = "No Class";
+        document.getElementById("saturday").innerHTML = "No Class";
+
+    }
+
+}
+catch(error){
+
+    console.log(error);
+
+}
 
 </script>
 
 </body>
 </html>
+```
