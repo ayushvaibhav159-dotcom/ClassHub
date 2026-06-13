@@ -123,6 +123,20 @@ Save Assignment
 
 </div>
 
+<div class="card">
+
+<h2>Exam Date</h2>
+
+<input
+type="date"
+id="examDate">
+
+<button onclick="saveExamDate()">
+Save Exam Date
+</button>
+
+</div>
+
 <script type="module">
 
 import { initializeApp }
@@ -149,26 +163,18 @@ const db = getFirestore(app);
 
 window.logoutAdmin = function(){
 
-    localStorage.removeItem(
-        "adminLoggedIn"
-    );
-
-    window.location.href =
-    "admin-login.html";
+    localStorage.removeItem("adminLoggedIn");
+    window.location.href = "admin-login.html";
 
 };
 
 window.saveNotice = async function(){
 
     let title =
-    document.getElementById(
-        "noticeTitle"
-    ).value;
+    document.getElementById("noticeTitle").value;
 
     let text =
-    document.getElementById(
-        "noticeText"
-    ).value;
+    document.getElementById("noticeText").value;
 
     if(title === "" || text === ""){
         alert("Please enter notice title and description.");
@@ -178,36 +184,22 @@ window.saveNotice = async function(){
     try{
 
         await setDoc(
-            doc(
-                db,
-                "notices",
-                "latest"
-            ),
+            doc(db, "notices", "latest"),
             {
                 title: title,
                 text: text
             }
         );
 
-        alert(
-            "Notice Saved to Firebase"
-        );
+        alert("Notice Saved to Firebase");
 
-        document.getElementById(
-            "noticeTitle"
-        ).value = "";
-
-        document.getElementById(
-            "noticeText"
-        ).value = "";
+        document.getElementById("noticeTitle").value = "";
+        document.getElementById("noticeText").value = "";
 
     }
     catch(error){
 
-        alert(
-            "Error: " +
-            error.message
-        );
+        alert("Error: " + error.message);
 
     }
 
@@ -218,11 +210,7 @@ window.saveTimetable = async function(){
     try{
 
         await setDoc(
-            doc(
-                db,
-                "timetable",
-                "week"
-            ),
+            doc(db, "timetable", "week"),
             {
                 monday:
                 document.getElementById("monday").value,
@@ -244,17 +232,12 @@ window.saveTimetable = async function(){
             }
         );
 
-        alert(
-            "Timetable Saved to Firebase"
-        );
+        alert("Timetable Saved to Firebase");
 
     }
     catch(error){
 
-        alert(
-            "Error: " +
-            error.message
-        );
+        alert("Error: " + error.message);
 
     }
 
@@ -263,55 +246,67 @@ window.saveTimetable = async function(){
 window.saveAssignment = async function(){
 
     let title =
-    document.getElementById(
-        "assignmentTitle"
-    ).value;
+    document.getElementById("assignmentTitle").value;
 
     let date =
-    document.getElementById(
-        "assignmentDate"
-    ).value;
+    document.getElementById("assignmentDate").value;
 
     if(title === "" || date === ""){
-        alert(
-            "Please enter assignment title and date."
-        );
+        alert("Please enter assignment title and date.");
         return;
     }
 
     try{
 
         await setDoc(
-            doc(
-                db,
-                "assignments",
-                "latest"
-            ),
+            doc(db, "assignments", "latest"),
             {
                 title: title,
                 date: date
             }
         );
 
-        alert(
-            "Assignment Saved to Firebase"
-        );
+        alert("Assignment Saved to Firebase");
 
-        document.getElementById(
-            "assignmentTitle"
-        ).value = "";
-
-        document.getElementById(
-            "assignmentDate"
-        ).value = "";
+        document.getElementById("assignmentTitle").value = "";
+        document.getElementById("assignmentDate").value = "";
 
     }
     catch(error){
 
-        alert(
-            "Error: " +
-            error.message
+        alert("Error: " + error.message);
+
+    }
+
+};
+
+window.saveExamDate = async function(){
+
+    let date =
+    document.getElementById("examDate").value;
+
+    if(date === ""){
+        alert("Please select an exam date.");
+        return;
+    }
+
+    try{
+
+        await setDoc(
+            doc(db, "exam", "latest"),
+            {
+                date: date
+            }
         );
+
+        alert("Exam Date Saved to Firebase");
+
+        document.getElementById("examDate").value = "";
+
+    }
+    catch(error){
+
+        alert("Error: " + error.message);
 
     }
 
