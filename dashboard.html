@@ -207,7 +207,9 @@ Please wait...
 
 <h2>Exam Countdown</h2>
 
-<p id="countdown"></p>
+<p id="countdown">
+Loading...
+</p>
 
 </div>
 
@@ -255,16 +257,26 @@ window.location.href =
 
 }
 
-const examDate =
-new Date("2026-10-12");
+function updateCountdown(examDateString){
 
-function updateCountdown(){
+const examDate =
+new Date(examDateString);
 
 const today =
 new Date();
 
 const diff =
 examDate - today;
+
+if(diff <= 0){
+
+document.getElementById("countdown")
+.innerHTML =
+"Exam Started 🎓";
+
+return;
+
+}
 
 const days =
 Math.floor(
@@ -276,8 +288,6 @@ document.getElementById("countdown")
 days + " Days Remaining";
 
 }
-
-updateCountdown();
 
 function calculateBunk(){
 
@@ -432,6 +442,38 @@ document.getElementById("assignmentTitle")
 document.getElementById("assignmentDate")
 .innerHTML =
 "Unable to load assignment.";
+
+}
+
+try{
+
+const examRef =
+doc(db, "exam", "latest");
+
+const examSnap =
+await getDoc(examRef);
+
+if(examSnap.exists()){
+
+updateCountdown(
+examSnap.data().date
+);
+
+}
+else{
+
+document.getElementById("countdown")
+.innerHTML =
+"No Exam Date";
+
+}
+
+}
+catch(error){
+
+document.getElementById("countdown")
+.innerHTML =
+"Unable to load exam date.";
 
 }
 
